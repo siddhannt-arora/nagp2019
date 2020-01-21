@@ -39,10 +39,7 @@ pipeline
 			steps
 			{
 				echo "*********** starting sonar analysis ***********"    
-				withSonarQubeEnv('Test_Sonar')
-				{
-				 bat "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:$JOB_NAME /n:$JOB_NAME /v:1.0 "    
-				}
+				
 			}
 		}
 		stage ('build')
@@ -58,11 +55,7 @@ pipeline
 			steps
 			{
 				echo "*************** Ending Sonar analysis ***********"
-				withSonarQubeEnv('Test_Sonar')
-			{
-				bat "dotnet ${scannerHome}/SonarScanner.MSBuild.dll end"
-			}
-			
+				
 			}
 		}
 		stage ('Release Artifacts')
@@ -70,7 +63,7 @@ pipeline
 			steps
 			{
 				echo "************** Publishing app ***************"
-				
+				bat "dotnet publish -c Release -o WebApplication4/app/publish"
 			}
 		}
 		stage ('Docker Image')

@@ -39,7 +39,10 @@ pipeline
 			steps
 			{
 				echo "*********** starting sonar analysis ***********"    
-				bat "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:$JOB_NAME /n:$JOB_NAME /v:1.0 "    
+				withSonarQubeEnv('Test_Sonar')
+				{
+				 bat "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:$JOB_NAME /n:$JOB_NAME /v:1.0 "    
+				}
 			}
 		}
 		stage ('build')

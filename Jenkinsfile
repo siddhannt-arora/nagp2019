@@ -93,7 +93,7 @@ pipeline
 			{
 				echo "*************** Removing already running conatiners *****************"
 				bat 
-				 '''SET ContainerID   = docker ps | grep 5600 | cut -d " " -f 1 
+				 '''SET ContainerID   = docker ps | grep 5600 | cut -d \" \" -f 1 
 					if (ContainerID )  (docker stop ContainerID  docker rm -f ContainerID )
 					'''
 				

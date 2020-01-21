@@ -80,7 +80,7 @@ pipeline
 				echo "***************** Pushing image to Nagarro DTR or Docker Hub **********"
 				
 			}
-			}
+			
 		}
 		stage ('Stop Running container')
 		{

@@ -92,8 +92,8 @@ pipeline
 			steps
 			{
 				echo "*************** Removing already running conatiners *****************"
-				bat label: '', script: '''SET test= docker ps | grep 5600| cut -d " " -f 1 
-				echo test'''
+				bat label: '', script: '''SET test = docker ps -q --filter "name=dotnetcoreapp_siddhanntarora")
+echo %test%'''
 				  
 			
 				

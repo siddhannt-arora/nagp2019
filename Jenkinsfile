@@ -70,7 +70,7 @@ pipeline
 			steps
 			{
 				echo "************** Publishing app ***************"
-				bat "dotnet publish -c Release -o WebApplication4/app/publish"
+				
 			}
 		}
 		stage ('Docker Image')

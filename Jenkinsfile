@@ -58,6 +58,10 @@ pipeline
 			steps
 			{
 				echo "*************** Ending Sonar analysis ***********"
+				withSonarQubeEnv('Test_Sonar')
+			{
+				bat "dotnet ${scannerHome}/SonarScanner.MSBuild.dll end"
+			}
 			
 			}
 		}
@@ -74,14 +78,17 @@ pipeline
 			steps
 			{
 				echo "****************** Build Docker image ****************"
+				bat "docker build --no-cache -t siddhanntarora/nagp_3149656:${BUILD_NUMBER} ."
 				
 			}
 		}
-		stage ('Push to DTR')
+		stage ('Push to Docker Hub')
 		{
 			steps
 			{
 				echo "***************** Pushing image to Nagarro DTR or Docker Hub **********"
+				withDockerRegistry(credentialsId:'279ed781-7ab1-4d46-a3e9-57c42c42bf34', url:'') {
+				bat "docker push siddhanntarora/nagp_3149656:${BUILD_NUMBER}"
 				
 			}
 			
@@ -91,6 +98,7 @@ pipeline
 			steps
 			{
 				echo "*************** Removing already running conatiners *****************"
+				bat "docker ps -q --filter \"name=dotnetcoreapp_siddhanntarora\" && docker stop dotnetcoreapp_siddhanntarora && docker rm -f dotnetcoreapp_siddhanntarora"				
 				
 			}
 		}
@@ -99,7 +107,7 @@ pipeline
 			steps
 			{
 			   echo "*************** Deploying latest war on Docker Containers **************"
-			   
+			   bat "docker run --name dotnetcoreapp_siddhanntarora -d -p 5600:5600 siddhanntarora/nagp_3149656:${BUILD_NUMBER}"
 			}
 		}
 	}

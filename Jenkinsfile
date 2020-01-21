@@ -92,9 +92,9 @@ pipeline
 			steps
 			{
 				echo "*************** Removing already running conatiners *****************"
-				bat 
-				  '''if (docker ps -q --filter \\"name=dotnetcoreapp_siddhanntarora\\")  (docker stop dotnetcoreapp_siddhanntarora docker rm -f dotnetcoreapp_siddhanntarora)
-					'''
+				bat "if (docker ps -q --filter \"name=dotnetcoreapp_siddhanntarora\")  (docker stop dotnetcoreapp_siddhanntarora docker rm -f dotnetcoreapp_siddhanntarora)"
+				  
+			
 				
 			}
 		}

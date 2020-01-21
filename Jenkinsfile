@@ -93,8 +93,7 @@ pipeline
 			{
 				echo "*************** Removing already running conatiners *****************"
 				bat 
-				 '''SET ContainerID   = docker ps | grep 5600 | cut -d \" \" -f 1 
-					if (ContainerID )  (docker stop ContainerID  docker rm -f ContainerID )
+				  '''if (docker ps -q --filter \\"name=dotnetcoreapp_siddhanntarora\\")  (docker stop dotnetcoreapp_siddhanntarora docker rm -f dotnetcoreapp_siddhanntarora)
 					'''
 				
 			}

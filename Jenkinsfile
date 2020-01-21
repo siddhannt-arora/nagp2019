@@ -88,7 +88,8 @@ pipeline
 			{
 				echo "***************** Pushing image to Nagarro DTR or Docker Hub **********"
 				withDockerRegistry(credentialsId:'279ed781-7ab1-4d46-a3e9-57c42c42bf34', url:'') {
-				bat "docker push siddhanntarora/nagp_3149656:${BUILD_NUMBER}"
+					bat "docker push siddhanntarora/nagp_3149656:${BUILD_NUMBER}" 
+				}
 				
 			}
 			

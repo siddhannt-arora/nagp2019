@@ -92,9 +92,8 @@ pipeline
 			steps
 			{
 				echo "*************** Removing already running conatiners *****************"
-				bat label: '', script: '''if ( docker ps | grep 5600| cut -d " " -f 1) 
- (docker stop dotnetcoreapp_siddhanntarora docker rm -f dotnetcoreapp_siddhanntarora)
-					'''
+				bat label: '', script: '''SET test= docker ps | grep 5600| cut -d " " -f 1 
+				echo test'''
 				  
 			
 				

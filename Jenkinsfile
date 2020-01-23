@@ -38,7 +38,11 @@ pipeline
 		{
 			steps
 			{
-				echo "*********** starting sonar analysis ***********"    
+				echo "*********** starting sonar analysis ***********"  
+				withSonarQubeEnv('Test_Sonar')
+				{
+				 bat "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:$JOB_NAME /n:$JOB_NAME /v:1.0 "    
+				}
 				
 			}
 		}
@@ -55,6 +59,10 @@ pipeline
 			steps
 			{
 				echo "*************** Ending Sonar analysis ***********"
+				withSonarQubeEnv('Test_Sonar')
+				{
+					bat "dotnet ${scannerHome}/SonarScanner.MSBuild.dll end"
+				}
 				
 			}
 		}
@@ -63,6 +71,7 @@ pipeline
 			steps
 			{
 				echo "************** Publishing app ***************"
+				bat "dotnet publish -c Release -o WebApplication4/app/publish"
 				
 			}
 		}
@@ -92,11 +101,8 @@ pipeline
 			steps
 			{
 				echo "*************** Removing already running conatiners *****************"
-				bat label: '', script: '''SET test = docker ps -q --filter "name=dotnetcoreapp_siddhanntarora")
-echo %test%'''
-				  
-			
-				
+				bat "docker ps -q --filter \"name=dotnetcoreapp_siddhanntarora\" && docker stop dotnetcoreapp_siddhanntarora && docker rm -f dotnetcoreapp_siddhanntarora"			  
+							
 			}
 		}
 		stage ('Docker deployment')

@@ -111,7 +111,10 @@ pipeline
 						ECHO Container Id: %%c
 						SET ContainerId=%%c
 					    )
-					    IF NOT [%ContainerId%] == [] ECHO FOUND
+					    IF NOT [%ContainerId%] == [] (
+					    	docker rm -f %ContainerId%
+						ECHO Container removed
+					    )
 					    IF [%ContainerId%] == [] ECHO No container found				    
 
                                     """

@@ -48,7 +48,11 @@ pipeline
 			steps
 			{
 				echo "************* building the solution **********"
-				bat "dotnet build -c Release -o WebApplication4/app/build"
+				
+				bat """
+					rmdir /s /q WebApplication4\\app\\build>NUL
+					dotnet build -c Release -o WebApplication4\\app\\build
+				    """
 			}	
 		}
 		stage ('SonarQube Analysis end')
@@ -108,13 +112,10 @@ pipeline
 						SET ContainerId=%%c
 						IF NOT [%ContainerId%] == [] GOTO :RemoveContainer
 					    )
-					    GOTO :END
+					    IF NOT [%ContainerId%] == [] ECHO No container found
 					    :RemoveContainer
 					    docker rm -f %ContainerId%
 					    ECHO Container Removed
-
-					    :END
-					    ECHO ***End***
 
                                     """
 

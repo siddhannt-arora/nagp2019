@@ -39,10 +39,7 @@ pipeline
 			steps
 			{
 				echo "*********** starting sonar analysis ***********"  
-				withSonarQubeEnv('Test_Sonar')
-				{
-				 bat "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:$JOB_NAME /n:$JOB_NAME /v:1.0 "    
-				}
+				
 				
 			}
 		}
@@ -59,10 +56,7 @@ pipeline
 			steps
 			{
 				echo "*************** Ending Sonar analysis ***********"
-				withSonarQubeEnv('Test_Sonar')
-				{
-					bat "dotnet ${scannerHome}/SonarScanner.MSBuild.dll end"
-				}
+				
 				
 			}
 		}
@@ -71,8 +65,10 @@ pipeline
 			steps
 			{
 				echo "************** Publishing app ***************"
-				bat "dotnet publish -c Release -o WebApplication4/app/publish"
-				
+				bat """
+				rmdir /s /q WebApplication4\\app\\publish>NUL
+				dotnet publish -c Release -o WebApplication4\\app\\publish
+				"""				
 			}
 		}
 		stage ('Docker Image')
@@ -100,9 +96,42 @@ pipeline
 		{
 			steps
 			{
-				echo "*************** Removing already running conatiners *****************"
-				bat "docker ps -q --filter \"name=dotnetcoreapp_siddhanntarora\" && docker stop dotnetcoreapp_siddhanntarora && docker rm -f dotnetcoreapp_siddhanntarora"			  
-							
+				bat """
+                    @echo off
+                    ECHO ***Start***
+                    ECHO Check for running container
+                    docker ps>Containers
+
+
+                    for /f "tokens=1" %%b in ('FINDSTR "5600" Containers') do (
+                        ECHO Container Id: %%b
+                        SET ContainerId=%%b
+                        IF NOT [%ContainerId%] == [] GOTO :StopAndRemoveContainer
+                    )
+                    ECHO No running container found
+                    ECHO Check for all container
+                    docker ps -all>Containers
+
+
+                    for /f "tokens=1" %%a in ('FINDSTR "5600" Containers') do (
+                        ECHO Container Id: %%a
+                        SET ContainerId=%%a
+                        IF NOT [%ContainerId%] == [] GOTO :RemoveContainer
+                    )
+                    ECHO No container found
+                    GOTO :END
+                    :StopAndRemoveContainer
+                    docker stop %ContainerId%
+                    ECHO Container Stoped
+                    :RemoveContainer
+                    docker rm -f %ContainerId%
+                    ECHO Container Removed
+
+
+                    :END
+                    ECHO ***End***
+                """
+
 			}
 		}
 		stage ('Docker deployment')

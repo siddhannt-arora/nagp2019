@@ -124,7 +124,7 @@ pipeline
                     docker stop %ContainerId%
                     ECHO Container Stoped
                     :RemoveContainer
-                    docker rm -f %ContainerId%
+                    
                     ECHO Container Removed
 
 

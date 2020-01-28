@@ -110,12 +110,9 @@ pipeline
 					    for /f "tokens=1" %%c in ('FINDSTR "5600" Containers') do (
 						ECHO Container Id: %%c
 						SET ContainerId=%%c
-						IF NOT [%ContainerId%] == [] GOTO :RemoveContainer
+						IF NOT [%ContainerId%] == [] (docker rm -f %ContainerId% && ECHO Container Removed)
 					    )
-					    IF NOT [%ContainerId%] == [] ECHO No container found
-					    :RemoveContainer
-					    docker rm -f %ContainerId%
-					    ECHO Container Removed
+					    IF [%ContainerId%] == [] ECHO No container found				    
 
                                     """
 

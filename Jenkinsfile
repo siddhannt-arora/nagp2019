@@ -115,7 +115,7 @@ pipeline
 					    	docker rm -f %ContainerId%
 						ECHO Container removed
 					    )
-					    ELSE (
+					    IF [%ContainerId%] == [] (
 					    	ECHO No container found				    
 					    )
 

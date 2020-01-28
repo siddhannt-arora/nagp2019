@@ -114,9 +114,9 @@ pipeline
                     docker ps -all>Containers
 
 
-                    for /f "tokens=1" %%cont in ('FINDSTR "5600" Containers') do (
-                        ECHO Container Id: %%cont
-                        SET ContainerId=%%cont
+                    for /f "tokens=1" %%contAll in ('FINDSTR "5600" Containers') do (
+                        ECHO Container Id: %%contAll
+                        SET ContainerId=%%contAll
                         IF NOT [%ContainerId%] == [] GOTO :RemoveContainer
                     )
                     ECHO No container found

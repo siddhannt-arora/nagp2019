@@ -106,8 +106,7 @@ pipeline
                     for /f "tokens=1" %%b in ('FINDSTR "5600" Containers') do (
                         ECHO Container Id: %%b
                         SET ContainerId=%%b
-			ECHO %ContainerId%
-                        IF NOT [%ContainerId%] == [] ECHO "stopping"
+                        IF NOT [%ContainerId%] == [] GOTO :StopContainer
                     )
                     ECHO No running container found
                     ECHO Check for all container

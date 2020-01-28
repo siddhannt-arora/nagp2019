@@ -103,9 +103,9 @@ pipeline
                     docker ps>Containers
 
 
-                    for /f "tokens=1" %%cont in ('FINDSTR "5600" Containers') do (
-                        ECHO Container Id: %%cont
-                        SET ContainerId=%%cont
+                    for /f "tokens=1" %%b in ('FINDSTR "5600" Containers') do (
+                        ECHO Container Id: %%b
+                        SET ContainerId=%%b
 			ECHO %ContainerId%
                         IF NOT [%ContainerId%] == [] ECHO "stopping"
                     )
@@ -114,9 +114,9 @@ pipeline
                     docker ps -all>Containers
 
 
-                    for /f "tokens=1" %%contAll in ('FINDSTR "5600" Containers') do (
-                        ECHO Container Id: %%contAll
-                        SET ContainerId=%%contAll
+                    for /f "tokens=1" %%a in ('FINDSTR "5600" Containers') do (
+                        ECHO Container Id: %%a
+                        SET ContainerId=%%a
                         IF NOT [%ContainerId%] == [] GOTO :RemoveContainer
                     )
                     ECHO No container found

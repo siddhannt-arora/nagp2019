@@ -110,8 +110,8 @@ pipeline
 					    for /f "tokens=1" %%c in ('FINDSTR "5600" Containers') do (
 						ECHO Container Id: %%c
 						SET ContainerId=%%c
-						IF NOT [%ContainerId%] == [] ECHO FOUND
 					    )
+					    IF NOT [%ContainerId%] == [] ECHO FOUND
 					    IF [%ContainerId%] == [] ECHO No container found				    
 
                                     """

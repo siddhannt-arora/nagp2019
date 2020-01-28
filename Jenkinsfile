@@ -97,40 +97,27 @@ pipeline
 			steps
 			{
 				bat """
-                    @echo off
-                    ECHO ***Start***
-                    ECHO Check for running container
-                    docker ps>Containers
+					    @echo off
+					    ECHO ***Removing existing container***
+					    ECHO Check for all containers
 
+					    docker ps -all>Containers
 
-                    for /f "tokens=1" %%b in ('FINDSTR "5600" Containers') do (
-                        ECHO Container Id: %%b
-                        SET ContainerId=%%b
-                        IF NOT [%ContainerId%] == [] GOTO :StopContainer
-                    )
-                    ECHO No running container found
-                    ECHO Check for all container
-                    docker ps -all>Containers
+					    for /f "tokens=1" %%c in ('FINDSTR "5600" Containers') do (
+						ECHO Container Id: %%c
+						SET ContainerId=%%c
+						IF NOT [%ContainerId%] == [] GOTO :RemoveContainer
+					    )
+								IF [%ContainerId%] == [] ECHO No container found
+					    GOTO :END
+					    :RemoveContainer
+					    docker rm -f %ContainerId%
+					    ECHO Container Removed
 
+					    :END
+					    ECHO ***End***
 
-                    for /f "tokens=1" %%a in ('FINDSTR "5600" Containers') do (
-                        ECHO Container Id: %%a
-                        SET ContainerId=%%a
-                        IF NOT [%ContainerId%] == [] GOTO :RemoveContainer
-                    )
-                    ECHO No container found
-                    GOTO :END
-                    :StopContainer
-                    docker stop %ContainerId%
-                    ECHO Container Stoped
-                    :RemoveContainer
-                    
-                    ECHO Container Removed
-
-
-                    :END
-                    ECHO ***End***
-                """
+                                    """
 
 			}
 		}
